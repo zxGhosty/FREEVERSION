@@ -213,29 +213,10 @@ local PlayerTab = Window:NewTab("Player")
 local LocalTab = Window:NewTab("Local")
 
 local MSection = MainTab:NewSection("Main Settings")
-local ESPEnabled = false -- Variable to track the state of ESP
-
-local function ToggleESP()
-    if ESPEnabled then
-        DisableESP() -- Turn off ESP
-    else
-        esp() -- Turn on ESP
-    end
-    ESPEnabled = not ESPEnabled -- Toggle the state
-end
-
 MSection:NewToggle("Enable ESP", "Enable ESP", function(state)
     if state then
-        ToggleESP()
+        esp()
     else
         DisableESP() -- Turn off ESP
-        ESPEnabled = false
-    end
-end)
-
--- Listen for right shift key input to toggle menu state
-UserInputService.InputBegan:Connect(function(input)
-    if input.KeyCode == Enum.KeyCode.RightShift then
-        Window:Toggle()
     end
 end)
