@@ -4,42 +4,40 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local Camera = game:GetService("Workspace").CurrentCamera
 
-local function ezEsp(player)
-    local esp = Instance.new("Highlight", player)
-    wait(1)
-    if player:FindFirstChild("friendly_marker") then
-        esp.FillColor = Color3.new(0, 0, 1)
-    end
-end
+local MainTab = Window:NewTab("Main")
+local PlayerTab = Window:NewTab("Player")
+local LocalTab = Window:NewTab("Local")
+local MSection = MainTab:NewSection("Main Settings")
 
-local function Lesp(player)
-    for _, shit in pairs(player:GetChildren()) do
-        if shit.Name == "Hightlight" then
-            shit:Destroy()
+
+MSection:NewButton("Enable ESP", "Turn on ESP", function()
+    local function ezEsp(player)
+        local esp = Instance.new("Highlight", player)
+        wait(1)
+        if player:FindFirstChild("friendly_marker") then
+            esp.FillColor = Color3.new(0, 0, 1)
         end
     end
-end
-
-local function esp()
-    for _, player in ipairs(Players:GetPlayers()) do
+    
+    local function Lesp(player)
+        for _, shit in pairs(player:GetChildren()) do
+            if shit.Name == "Hightlight" then
+                shit:Destroy()
+            end
+        end
+    end
+    
+    for _, player in pairs(game.Workspace:GetChildren()) do
         if player.Name == "soldier_model" then
             Lesp(player)
             ezEsp(player)
         end
     end
-end
-
-local MainTab = Window:NewTab("Main")
-local PlayerTab = Window:NewTab("Player")
-local LocalTab = Window:NewTab("Local")
-
-local MSection = MainTab:NewSection("Main Settings")
-MSection:NewToggle("Enable ESP", "Turn on ESP", function(state)
-    if state then
-        esp()
-    else
-        for _, player in ipairs(Players:GetPlayers()) do
+    
+    game.Workspace.DescendantAdded:Connect(function(player)
+        if player.Name == "soldier_model" then
             Lesp(player)
+            spawn(function()ezEsp(player)end)
         end
-    end
+    end)
 end)
