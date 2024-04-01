@@ -4,29 +4,29 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local Camera = game:GetService("Workspace").CurrentCamera
 
+local function ezEsp(player)
+    local esp = Instance.new("Highlight", player)
+    wait(1)
+    if player:FindFirstChild("friendly_marker") then
+        esp.FillColor = Color3.new(0, 0, 1)
+    end
+end
+
+local function Lesp(player)
+    for _, shit in pairs(player:GetChildren()) do
+        if shit.Name == "Hightlight" then
+            shit:Destroy()
+        end
+    end
+end
+
 local function esp()
-    local function ezEsp(player)
-        local esp = Instance.new("Highlight", player)
-        wait(1)
-        if player:FindFirstChild("friendly_marker") then
-            esp.FillColor = Color3.new(0, 0, 1)
-        end
-    end
-
-    local function Lesp(player)
-        for _, shit in pairs(player:GetChildren()) do
-            if shit.Name == "Hightlight" then
-                shit:Destroy()
-            end
-        end
-    end
-
-    game.Workspace.DescendantAdded:Connect(function(player)
+    for _, player in ipairs(Players:GetPlayers()) do
         if player.Name == "soldier_model" then
             Lesp(player)
-            spawn(function()ezEsp(player)end)
+            ezEsp(player)
         end
-    end)
+    end
 end
 
 local MainTab = Window:NewTab("Main")
@@ -38,6 +38,8 @@ MSection:NewToggle("Enable ESP", "Enable ESP", function(state)
     if state then
         esp()
     else
-        shit:Destroy()
+        for _, player in ipairs(Players:GetPlayers()) do
+            Lesp(player)
+        end
     end
 end)
