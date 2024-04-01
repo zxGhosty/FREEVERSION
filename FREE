@@ -34,7 +34,7 @@ local PlayerTab = Window:NewTab("Player")
 local LocalTab = Window:NewTab("Local")
 
 local MSection = MainTab:NewSection("Main Settings")
-MSection:NewToggle("Enable ESP", "Enable ESP", function(state)
+MSection:NewToggle("Enable ESP", "Turn on ESP", function(state)
     if state then
         esp()
     else
